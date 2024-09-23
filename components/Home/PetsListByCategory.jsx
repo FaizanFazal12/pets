@@ -12,18 +12,20 @@ export default function PetsListByCategory() {
     setPets([]);
     const q = query(collection(db, 'pets'), where('category', '==', category));
     const snap = await getDocs(q);
-    let data = [];
+
 
     snap.forEach((doc) => {
       const pet = doc.data();
-      data.push(pet);
+
+      console.log('pet',pet)
+
+      setPets((prev) => [...prev, pet]);
     });
 
-    setPets(data); // Update the state with fetched data
   }
 
   useEffect(() => {
-    GetPetList('Dog'); // Default category
+    GetPetList('Dog'); 
   }, []);
 
   return (

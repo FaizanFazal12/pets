@@ -1,7 +1,8 @@
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { ClerkProvider } from '@clerk/clerk-expo'
 import * as SecureStore from 'expo-secure-store'
+import { useEffect } from "react";
 
 
 export default function RootLayout() {
@@ -32,12 +33,24 @@ export default function RootLayout() {
     },
   }
 
-    useFonts({
+  
+  
+
+  const [loaded] = useFonts({
     "outfit": require("../assets/fonts/Outfit-Regular.ttf"),
     "outfit-bold": require("../assets/fonts/Outfit-Bold.ttf"),
     "outfit-medium": require("../assets/fonts/Outfit-Medium.ttf"),
   });
 
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
   
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>

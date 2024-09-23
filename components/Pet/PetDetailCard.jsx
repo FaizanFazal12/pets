@@ -6,6 +6,7 @@ export default function PetDetailsCard({ icon, label, value }) {
     <View style={styles.cardContainer}>
       <Image source={icon} style={styles.icon} />
       <View style={styles.details}>
+        
         <Text style={styles.label}>{label}</Text>
         <Text style={styles.value}>{value}</Text>
       </View>
