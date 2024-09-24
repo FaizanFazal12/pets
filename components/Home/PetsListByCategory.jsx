@@ -17,7 +17,6 @@ export default function PetsListByCategory() {
     snap.forEach((doc) => {
       const pet = doc.data();
 
-      console.log('pet',pet)
 
       setPets((prev) => [...prev, pet]);
     });
@@ -39,7 +38,7 @@ export default function PetsListByCategory() {
         numColumns={2}  // Display items in two columns
         renderItem={({ item }) => <PetsList item={item} />} 
         keyExtractor={(item, index) => index.toString()}
-        showsVerticalScrollIndicator={false}  // Optional: Hide the vertical scrollbar
+        showsVerticalScrollIndicator={false}  
       />
     </View>
   );

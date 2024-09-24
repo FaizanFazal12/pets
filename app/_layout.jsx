@@ -67,6 +67,9 @@ export default function RootLayout() {
       <Stack.Screen name="pet-details/index" options={{
         headerShown:false
       }}/>
+      <Stack.Screen name="favourite/index" options={{
+        headerShown:false
+      }}/>
     </Stack>
     </ClerkProvider>
   
