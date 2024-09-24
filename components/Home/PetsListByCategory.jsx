@@ -4,6 +4,7 @@ import Category from './Category'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../configs/FirebaseConfig'
 import PetsList from './PetsList'
+import Colors from '../../constants/Colors'
 
 export default function PetsListByCategory() {
   const [pets, setPets] = useState([]);
@@ -31,7 +32,13 @@ export default function PetsListByCategory() {
     <View style={styles.container}> 
       <Category category={(value) => GetPetList(value)} />
 
-      <Text>Hi</Text>
+      <Text style={{
+        fontFamily: 'outfit-medium', 
+        fontSize: 22,
+        textAlign: 'start', 
+        marginLeft:10,
+        margin:20
+      }}>Pets</Text>
 
       <FlatList
         data={pets}

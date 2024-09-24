@@ -67,7 +67,8 @@ export default function RootLayout() {
       <Stack.Screen name="pet-details/index" options={{
         headerShown:false
       }}/>
-      <Stack.Screen name="favourite/index" options={{
+  
+      <Stack.Screen name="pet-creates/index" options={{
         headerShown:false
       }}/>
     </Stack>

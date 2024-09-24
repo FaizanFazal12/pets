@@ -7,6 +7,8 @@ export default function Index() {
   const { isLoaded, user } = useUser();
   const [loading, setLoading] = useState(true);
 
+  
+
   useEffect(() => {
     if (isLoaded) {
       setLoading(false);
