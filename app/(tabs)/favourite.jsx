@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 export default function Favourite() {
   return (
     <SafeAreaView>
+      
     <View>
     <FavouriteList/>
     </View>

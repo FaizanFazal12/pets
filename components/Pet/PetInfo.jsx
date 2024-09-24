@@ -21,57 +21,44 @@ export default function PetInfo({ Pet }) {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
 
-  const {user} = useUser();
+  const { user } = useUser();
 
-  // const handleFavorite = async () => {
-  //   setLoading(true);
-  //   try {
-  //     setTimeout(() => {
-  //       setIsFavorite(!isFavorite);
-  //       setLoading(false);
-  //     }, 1000);
-  //   } catch (error) {
-  //     console.error("Error favoriting pet:", error);
-  //     setLoading(false); 
-  //   }
-  // };
 
   const handleFavorite = async () => {
     if (!user || !Pet) return;
-  
+
     setLoading(true);
-  
+
     try {
       const favoriteDocRef = doc(db, 'favourites', `${user.id}_${Pet.id}`);
-  
+
       if (isFavorite) {
-       
+
         await deleteDoc(favoriteDocRef);
-        setIsFavorite(false); 
+        setIsFavorite(false);
       } else {
-        console.log('user',user.id ,'pet',Pet.id)
         await setDoc(favoriteDocRef, {
-          userId: user.id, 
-          petId: Pet.id,   
+          id: Date.now(),
+          userId: user.id,
+          petId: Pet.id,
           petName: Pet.name,
-          petImage:Pet.image, 
-          petBreed:Pet.breed, 
-          timestamp: new Date() 
+          petImage: Pet.image,
+          petBreed: Pet.breed,
+          timestamp: new Date()
         });
-        setIsFavorite(true); 
+        setIsFavorite(true);
       }
     } catch (error) {
       console.error("Error toggling favorite:", error);
     }
-  
+
     setLoading(false);
   };
 
 
   useEffect(() => {
     const checkIfFavorite = async () => {
-      if (!user || !Pet) return;
-  
+
       try {
 
         const favoriteDocRef = doc(db, 'favourites', `${user.id}_${Pet.id}`);
@@ -85,136 +72,134 @@ export default function PetInfo({ Pet }) {
         console.error("Error checking if favorite:", error);
       }
     };
-  
+
     checkIfFavorite();
-  }, [Pet, user]);
-  
-  
+  }, [Pet]);
+
+
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <Image style={styles.image} source={{ uri: Pet?.image }} />
+      <Image style={styles.image} source={{ uri: Pet?.image }} />
 
-        <View style={styles.headerContainer}>
-          <View style={styles.petName}>
-            <Text
-              style={{
-                backgroundColor: Colors.LIGHT_PRIMARY,
-                padding: 10,
-                borderRadius: 10,
-                color: Colors.GRAY,
-                fontFamily: "outfit-medium",
-                fontSize: 12,
-                fontFamily: "outfit",
-                textAlign: "center",
-              }}
-            >
-              {Pet?.breed}
-            </Text>
+      <View style={styles.headerContainer}>
+        <View style={styles.petName}>
+          <Text
+            style={{
+              backgroundColor: Colors.LIGHT_PRIMARY,
+              padding: 10,
+              borderRadius: 10,
+              color: Colors.GRAY,
+              fontFamily: "outfit-medium",
+              fontSize: 12,
+              fontFamily: "outfit",
+              textAlign: "center",
+            }}
+          >
+            {Pet?.breed}
+          </Text>
+        </View>
+
+        <TouchableOpacity onPress={handleFavorite} disabled={loading}>
+          <View style={styles.favoriteButton}>
+            {loading ? (
+              <ActivityIndicator size="small" color={Colors.SECONDARY} />
+            ) : (
+
+              <FontAwesome
+                name={isFavorite ? "heart" : "heart-o"}
+                size={28} // Icon size
+                color={isFavorite ? Colors.PRIMARY : Colors.GRAY}
+              />
+            )}
           </View>
+        </TouchableOpacity>
+      </View>
 
-          <TouchableOpacity onPress={handleFavorite} disabled={loading}>
-            <View style={styles.favoriteButton}>
-              {loading ? (
-                <ActivityIndicator size="small" color={Colors.SECONDARY} />
-              ) : (
-                
-                <FontAwesome
-                  name={isFavorite ? "heart" : "heart-o"} 
-                  size={28} // Icon size
-                  color={isFavorite ? Colors.PRIMARY : Colors.GRAY} 
-                />
-              )}
-            </View>
-          </TouchableOpacity>
-        </View>
+      <View style={{ flexDirection: "row", gap: 10, marginHorizontal: 10 }}>
+        <PetDetailCard
+          icon={require("../../assets/images/gender.png")}
+          label="Name"
+          value={Pet?.name}
+        />
+        <PetDetailCard
+          icon={require("../../assets/images/weight.png")}
+          label="Weight"
+          value={Pet?.weight}
+        />
+      </View>
 
-        <View style={{ flexDirection: "row", gap: 10, marginHorizontal: 10 }}>
-          <PetDetailCard
-            icon={require("../../assets/images/gender.png")}
-            label="Name"
-            value={Pet?.name}
-          />
-          <PetDetailCard
-            icon={require("../../assets/images/weight.png")}
-            label="Weight"
-            value={Pet?.weight}
-          />
-        </View>
+      <View style={{ flexDirection: "row", gap: 10, marginHorizontal: 10 }}>
+        <PetDetailCard
+          icon={require("../../assets/images/bone.png")}
+          label="Category"
+          value={Pet?.category}
+        />
+        <PetDetailCard
+          icon={require("../../assets/images/calendar.png")}
+          label="Age"
+          value={Pet?.age}
+        />
+      </View>
 
-        <View style={{ flexDirection: "row", gap: 10, marginHorizontal: 10 }}>
-          <PetDetailCard
-            icon={require("../../assets/images/bone.png")}
-            label="Category"
-            value={Pet?.category}
-          />
-          <PetDetailCard
-            icon={require("../../assets/images/calendar.png")}
-            label="Age"
-            value={Pet?.age}
-          />
-        </View>
-
-        {/* About */}
-        <View
+      {/* About */}
+      <View
+        style={{
+          padding: 20,
+          marginVertical: 10,
+        }}
+      >
+        <Text
           style={{
-            padding: 20,
-            marginVertical: 10,
+            color: Colors.PRIMARY,
+            fontSize: 29,
+            fontFamily: "outfit-bold",
+            paddingVertical: 5,
+          }}
+        >
+          About
+        </Text>
+
+        <Text
+          style={{
+            fontFamily: "outfit",
+            letterSpacing: 0.5,
+            fontSize: 15,
+            color: Colors.GRAY,
+          }}
+        >
+          {!show ? Pet?.about?.slice(0, 70) : Pet?.about}
+        </Text>
+
+        <Pressable
+          onPress={() => {
+            setShow(!show);
           }}
         >
           <Text
             style={{
-              color: Colors.PRIMARY,
-              fontSize: 29,
-              fontFamily: "outfit-bold",
-              paddingVertical: 5,
-            }}
-          >
-            About
-          </Text>
-
-          <Text
-            style={{
+              fontSize: 17,
               fontFamily: "outfit",
-              letterSpacing: 0.5,
-              fontSize: 15,
-              color: Colors.GRAY,
+              color: "red",
+              width: 100,
+              borderRadius: 9,
+              marginVertical: 4,
             }}
           >
-            {!show ? Pet?.about?.slice(0, 70) : Pet?.about}
+            {!show ? "show more" : "show less"}
           </Text>
+        </Pressable>
+      </View>
 
-          <Pressable
-            onPress={() => {
-              setShow(!show);
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 17,
-                fontFamily: "outfit",
-                color: "red",
-                width: 100,
-                borderRadius: 9,
-                marginVertical: 4,
-              }}
-            >
-              {!show ? "show more" : "show less"}
-            </Text>
-          </Pressable>
-        </View>
-
-        <View style={styles.authorContainer}>
-          <Image
-            source={{ uri: Pet?.userimage || "https://via.placeholder.com/50" }} // Demo image if no user image
-            style={styles.authorImage}
-          />
-          <Text style={styles.authorName}>
-            Posted by: {Pet?.username || "Unknown"}
-          </Text>
-        </View>
-      </ScrollView>
+      <View style={styles.authorContainer}>
+        <Image
+          source={{ uri: Pet?.userimage || "https://via.placeholder.com/50" }} // Demo image if no user image
+          style={styles.authorImage}
+        />
+        <Text style={styles.authorName}>
+          Posted by: {Pet?.username || "Unknown"}
+        </Text>
+      </View>
     </View>
   );
 }

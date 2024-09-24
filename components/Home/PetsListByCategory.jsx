@@ -13,12 +13,8 @@ export default function PetsListByCategory() {
     setPets([]);
     const q = query(collection(db, 'pets'), where('category', '==', category));
     const snap = await getDocs(q);
-
-
-    snap.forEach((doc) => {
+      snap.forEach((doc) => {
       const pet = doc.data();
-
-
       setPets((prev) => [...prev, pet]);
     });
 

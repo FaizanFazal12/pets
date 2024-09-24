@@ -1,19 +1,21 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet ,ScrollView } from 'react-native'
 import React from 'react'
 import PetCreate from '../../components/Pet/PetCreate'
 
 export default function Index() {
   return (
-    <View style={styles?.container}>
+    <ScrollView>
+
+    <View>
       <PetCreate/>
     </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
 
     container:{
-     height:'100%',
      display:'flex',
      justifyContent:'center'
     }
