@@ -15,7 +15,8 @@ export default function PetCreate() {
     age: "",
     about: "",
     image: "",
-    category:""
+    category:"",
+    weight:""
   });
 
   const [loading, setLoading] = useState(false);
@@ -41,6 +42,7 @@ export default function PetCreate() {
       breed: breed,
       age: age,
       about: about,
+      weight: weight,
       category: category,
       image: image,
       userimage: user.imageUrl,
@@ -61,7 +63,8 @@ export default function PetCreate() {
         age: "",
         about: "",
         image: "",
-        category:''
+        category:'',
+        weight:''
       });
     } catch (error) {
       Alert.alert("Error", "Failed to save pet: " + error.message);
@@ -119,6 +122,14 @@ export default function PetCreate() {
         onChangeText={(value) => handleInputChange("age", value)}
         keyboardType="numeric"
       />
+      <Text style={styles.label}>Weight</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter weight"
+        value={form.weight}
+        onChangeText={(value) => handleInputChange("weight", value)}
+        keyboardType="numeric"
+      />
 
       <Text style={styles.label}>Category</Text>
       <View style={styles.pickerContainer}>
@@ -127,11 +138,17 @@ export default function PetCreate() {
           onValueChange={(value) => handleInputChange("category", value)}
           style={styles.picker}
         >
-          <Picker.Item label="Select category" value="" />
+
+            {
+                categoryList.map((category) => (
+                  <Picker.Item key={category.id} label={category.name} value={category.name} />
+                ))}
+        
+          {/* <Picker.Item label="Select category" value="" />
           <Picker.Item label="Dog" value="dog" />
           <Picker.Item label="Cat" value="cat" />
           <Picker.Item label="Bird" value="bird" />
-          <Picker.Item label="Other" value="other" />
+          <Picker.Item label="Other" value="other" /> */}
         </Picker>
       </View>
       <Text style={styles.label}>About Pet (optional)</Text>
@@ -174,7 +191,7 @@ const styles = StyleSheet.create({
     color: Colors.PRIMARY,
     marginBottom: 20,
     textAlign: "center",
-    fontFamily: "outfit", // Font applied to title
+    fontFamily: "outfit", 
   },
   label: {
     fontSize: 16,
@@ -184,7 +201,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    height: 60,
+    height: 40,
     borderColor: Colors.GRAY,
     borderRadius: 5,
     padding: 10,
@@ -192,18 +209,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: Colors.LIGHT_PRIMARY,
     fontFamily: "outfit",
-    pickerContainer: {
-        borderWidth: 1,
-        borderColor: Colors.GRAY,
-        backgroundColor: Colors.LIGHT_PRIMARY,
-        borderRadius: 5,
-        marginBottom: 15,
-        backgroundColor: Colors.LIGHT_PRIMARY,
-      },
-      picker: {
-        color: Colors.PRIMARY,
-        backgroundColor: Colors.LIGHT_PRIMARY,
-        fontFamily: 'outfit',
-      },
+    
+  },
+
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: Colors.GRAY,
+    backgroundColor: Colors.LIGHT_PRIMARY,
+    borderRadius: 5,
+    marginBottom: 15,
+    backgroundColor: Colors.LIGHT_PRIMARY,
+  },
+  picker: {
+    color: Colors.PRIMARY,
+    backgroundColor: Colors.LIGHT_PRIMARY,
+    fontFamily: 'outfit',
   },
 });
