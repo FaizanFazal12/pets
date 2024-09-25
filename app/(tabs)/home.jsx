@@ -1,5 +1,5 @@
-import { View, FlatList, Text, StyleSheet } from "react-native";
-import React from "react";
+import { View, FlatList, Text, StyleSheet, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Home/Header";
 import Banner from "../../components/Home/Banner";
 import PetsListByCategory from "../../components/Home/PetsListByCategory";
@@ -7,9 +7,15 @@ import Colors from "../../constants/Colors";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
 
 export default function Home() {
   const data = [{}];
+  const [loading, setLoading] = useState(true)
+
+  const { isLoaded, user } = useUser();
+
+
 
   const router = useRouter();
   const renderItem = () => (
@@ -33,6 +39,21 @@ export default function Home() {
       <MaterialIcons name="pets" size={24} color="black" />
     </TouchableOpacity>
   );
+
+
+  useEffect(() => {
+    if (isLoaded) {
+      setLoading(false);
+    }
+  }, [isLoaded]);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
     <FlatList

@@ -11,21 +11,22 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {
-    setLoading(true); // Start loading when logging out
+    setLoading(true);
     await signOut();
-    setLoading(false); // Stop loading after sign out
-    router.push('/login'); // Redirect to login page
+    setLoading(false); 
+    router.push('/login'); 
   };
 
+
+
+
   useEffect(() => {
-    // If user is not loaded, we can show a loader or handle it as needed
-    if (!isLoaded) {
-      setLoading(true);
-    } else {
+    if (isLoaded) {
       setLoading(false);
     }
-  }, [isLoaded]);
 
+    
+  }, [isLoaded]);
   if (loading) {
     return (
       <View style={styles.loaderContainer}>

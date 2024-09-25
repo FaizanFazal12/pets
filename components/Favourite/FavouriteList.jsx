@@ -10,12 +10,22 @@ import { useRouter } from "expo-router";
 export default function FavouriteList() {
   const [favourites, setFavourites] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useUser();
   const router = useRouter();
+  const { isLoaded, user } = useUser();
+
+
+
+  useEffect(() => {
+    if (isLoaded) {
+      setLoading(false);
+    }
+  }, [isLoaded]);
+
+
 
   useEffect(() => {
     const fetchFavourites = async () => {
-      setLoading(true); // Set loading to true at the start
+      setLoading(true); 
       try {
         const q = query(collection(db, "favourites"), where("userId", "==", user.id));
         const querySnapshot = await getDocs(q);
@@ -28,7 +38,7 @@ export default function FavouriteList() {
       } catch (error) {
         console.error("Error fetching favourite pets:", error);
       } finally {
-        setLoading(false); // Set loading to false when done
+        setLoading(false); 
       }
     };
 
